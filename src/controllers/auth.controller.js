@@ -1,35 +1,49 @@
 import jwt from "jsonwebtoken";
-import User from "../models/User.js";
+import Employee from "../models/Employee.js";
 
 const signToken = (uid) =>
-  jwt.sign({ id: uid }, process.env.JWT_SECRET, { expiresIn: "7d" });
+  jwt.sign({ id: uid }, process.env.JWT_SECRET, {
+    expiresIn: "7d",
+  });
 
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user || !(await user.comparePassword(password)))
+    const { department, employeeId } = req.body;
+
+    const employee = await Employee.findOne({
+      department: department,
+      employeeId: employeeId,
+    });
+
+    if (!employee) {
       return res.status(400).json({
         success: false,
         error: {
           code: "AUTH_INVALID",
-          message: "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+          message: "รหัสพนักงานหรือฝ่ายไม่ถูกต้อง",
         },
       });
+    }
 
-    const token = signToken(user._id);
-    res.json({ token });
+    const token = signToken(employee._id);
+
+    res.json({
+      success: true,
+      token,
+      employee,
+    });
   } catch (e) {
+    console.log(e);
     res.status(500).json({
       success: false,
       error: {
         code: "SERVER_ERROR",
-        message: "เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์",
+        message: "เกิดข้อผิดพลาดในเซิร์ฟเวอร์",
       },
     });
   }
 };
 
 export const me = (req, res) => {
-  res.json(req.user);
+  res.json(req.employee);
 };
