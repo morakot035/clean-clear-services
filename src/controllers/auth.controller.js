@@ -1,10 +1,17 @@
 import jwt from "jsonwebtoken";
 import Employee from "../models/Employee.js";
 
-const signToken = (uid) =>
-  jwt.sign({ id: uid }, process.env.JWT_SECRET, {
-    expiresIn: "7d",
-  });
+const signToken = (employee) =>
+  jwt.sign(
+    {
+      id: employee._id,
+      employeeId: employee.employeeId,
+      department: employee.department,
+      fullName: employee.fullName,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" }
+  );
 
 export const login = async (req, res) => {
   try {
@@ -25,7 +32,7 @@ export const login = async (req, res) => {
       });
     }
 
-    const token = signToken(employee._id);
+    const token = signToken(employee);
 
     res.json({
       success: true,
