@@ -4,6 +4,7 @@ import helmet from "helmet";
 import { config } from "dotenv";
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/auth.routes.js";
+import bingoRoutes from "./routes/bingo.routes.js";
 
 config();
 connectDB();
@@ -23,6 +24,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use("/api/auth", authRoutes);
+app.use("/api/bingo", bingoRoutes);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
