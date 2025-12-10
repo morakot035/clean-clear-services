@@ -3,6 +3,7 @@ import {
   getProgress,
   updateTask,
   leaderBoard,
+  uploadImage,
 } from "../controllers/bingo.controller.js";
 import { upload } from "../middlewares/upload.middleware.js";
 import { verifyToken } from "../middlewares/verifyToken.js";

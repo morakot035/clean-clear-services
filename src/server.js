@@ -19,6 +19,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+const __dirname = path.resolve();
 app.use(helmet());
 app.use((req, res, next) => {
   console.log(`📥 Request: ${req.method} ${req.url}`);
@@ -26,7 +27,7 @@ app.use((req, res, next) => {
 });
 app.use("/api/auth", authRoutes);
 app.use("/api/bingo", bingoRoutes);
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
