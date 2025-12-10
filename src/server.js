@@ -27,6 +27,10 @@ app.use((req, res, next) => {
   console.log(`📥 Request: ${req.method} ${req.url}`);
   next();
 });
+app.use("/uploads", (req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  next();
+});
 app.use("/api/auth", authRoutes);
 app.use("/api/bingo", bingoRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
