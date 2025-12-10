@@ -22,7 +22,12 @@ app.use(
 );
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginResourcePolicy: false,
+  })
+);
 
 app.use("/uploads", (req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
