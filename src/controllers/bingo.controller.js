@@ -87,3 +87,44 @@ export const updateTask = async (req, res) => {
     res.status(500).json({ success: false, error: "Update failed" });
   }
 };
+
+export const leaderBoard = async (req, res) => {
+  try {
+    const users = await BingoProgress.find().lean();
+
+    const leaderboard = users.map((u) => {
+      // นับ task completed
+      const completedCount = u.tasks.filter((t) => t.completed).length;
+
+      // คำนวณดาว (ทุก 3 ช่อง = 1 ดาว)
+      const stars = Math.floor(completedCount / 3);
+
+      // เก็บรูปภาพจาก task
+      const images = u.tasks
+        .filter((t) => t.completed && t.imageUrl)
+        .map((t) => ({
+          index: t.index,
+          title: t.title,
+          imageUrl: t.imageUrl,
+          uploadedAt: t.uploadedAt,
+        }));
+
+      return {
+        employeeId: u.employeeId,
+        fullName: u.fullName,
+        department: u.department,
+        completedCount,
+        stars,
+        images,
+      };
+    });
+
+    res.json({
+      success: true,
+      leaderboard,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
