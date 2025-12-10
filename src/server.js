@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { config } from "dotenv";
+import path from "path";
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/auth.routes.js";
 import bingoRoutes from "./routes/bingo.routes.js";
@@ -25,6 +26,7 @@ app.use((req, res, next) => {
 });
 app.use("/api/auth", authRoutes);
 app.use("/api/bingo", bingoRoutes);
+app.use("/uploads", express.static("uploads"));
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));

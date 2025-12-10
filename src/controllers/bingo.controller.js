@@ -128,3 +128,29 @@ export const leaderBoard = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+export const uploadImage = async (req, res) => {
+  try {
+    const payload = decodeToken(req);
+    if (!payload) {
+      return res.status(401).json({ success: false, error: "Unauthorized" });
+    }
+
+    if (!req.file) {
+      return res
+        .status(400)
+        .json({ success: false, error: "No file uploaded" });
+    }
+
+    // path ที่จะให้ frontend ใช้แสดงรูป
+    const imageUrl = `/uploads/${req.file.filename}`;
+
+    return res.json({
+      success: true,
+      imageUrl,
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ success: false, error: "Upload image failed" });
+  }
+};
