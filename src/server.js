@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { config } from "dotenv";
+import { fileURLToPath } from "url";
 import path from "path";
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/auth.routes.js";
@@ -19,7 +20,8 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-const __dirname = path.resolve();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 app.use(helmet());
 app.use((req, res, next) => {
   console.log(`📥 Request: ${req.method} ${req.url}`);
@@ -27,7 +29,7 @@ app.use((req, res, next) => {
 });
 app.use("/api/auth", authRoutes);
 app.use("/api/bingo", bingoRoutes);
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
