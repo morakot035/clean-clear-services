@@ -23,10 +23,7 @@ app.use(
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(helmet());
-app.use((req, res, next) => {
-  console.log(`📥 Request: ${req.method} ${req.url}`);
-  next();
-});
+
 app.use("/uploads", (req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   next();
