@@ -1,6 +1,4 @@
 import express from "express";
-import multer from "multer";
-
 import {
   getProgress,
   updateTask,
@@ -10,8 +8,6 @@ import {
 import { upload } from "../middlewares/upload.middleware.js";
 import { verifyToken } from "../middlewares/verifyToken.js";
 
-const upload = multer({ dest: "uploads/" });
-
 const router = express.Router();
 
 router.get("/progress", verifyToken, getProgress);
@@ -19,6 +15,7 @@ router.post("/update", verifyToken, updateTask);
 router.get("/leaderboard", verifyToken, leaderBoard);
 router.post(
   "/upload",
+  verifyToken,
   upload.single("image"), // field name จาก frontend: formData.append("image", file)
   uploadImage
 );
