@@ -26,8 +26,7 @@ app.use(
   })
 );
 
-// ✅ OPTIONS handler
-app.options("*", cors());
+app.options(/.*/, cors());
 
 app.use(
   helmet({
