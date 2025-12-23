@@ -18,6 +18,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: [
+      "http://localhost:3000",
       "https://clean-clear-prod.vercel.app",
       "https://clean-clear-services.onrender.com",
     ],
