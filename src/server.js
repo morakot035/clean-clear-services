@@ -13,21 +13,31 @@ connectDB();
 
 const app = express();
 app.use(express.json());
+
+// ✅ CORS (ต้องอยู่บน)
 app.use(
   cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: [
+      "https://clean-clear-prod.vercel.app",
+      "https://clean-clear-services.onrender.com",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+
+// ✅ OPTIONS handler
+app.options("*", cors());
+
 app.use(
   helmet({
     contentSecurityPolicy: false,
     crossOriginResourcePolicy: false,
   })
 );
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 app.use("/uploads", (req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
