@@ -7,6 +7,7 @@ import path from "path";
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/auth.routes.js";
 import bingoRoutes from "./routes/bingo.routes.js";
+import exportRoutes from "./routes/export.routes.js";
 
 config();
 connectDB();
@@ -46,6 +47,7 @@ app.use("/uploads", (req, res, next) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/bingo", bingoRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+app.use("/api/export", exportRoutes);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on ${PORT}`));
