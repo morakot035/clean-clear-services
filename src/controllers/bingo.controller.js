@@ -132,9 +132,7 @@ export const leaderBoard = async (req, res) => {
 export const uploadImage = async (req, res) => {
   try {
     const payload = decodeToken(req);
-    if (!payload) {
-      return res.status(401).json({ success: false, error: "Unauthorized" });
-    }
+    if (!payload) return res.status(401).json({ success: false });
 
     if (!req.file) {
       return res
@@ -142,15 +140,15 @@ export const uploadImage = async (req, res) => {
         .json({ success: false, error: "No file uploaded" });
     }
 
-    // path ที่จะให้ frontend ใช้แสดงรูป
-    const imageUrl = `/uploads/${req.file.filename}`;
+    // Cloudinary storage อยู่ใน req.file.path
+    const imageUrl = req.file.path;
 
     return res.json({
       success: true,
       imageUrl,
     });
-  } catch (e) {
-    console.error(e);
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ success: false, error: "Upload image failed" });
   }
 };

@@ -1,27 +1,23 @@
-// src/middlewares/upload.middleware.js
 import multer from "multer";
-import path from "path";
-import fs from "fs";
-import { fileURLToPath } from "url";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import { v2 as cloudinary } from "cloudinary";
+import dotenv from "dotenv";
+dotenv.config();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// configure cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-const uploadDir = path.join(__dirname, "../uploads");
-
-// ถ้าโฟลเดอร์ยังไม่มี ให้สร้าง
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir); // เก็บไฟล์ในโฟลเดอร์ /uploads
-  },
-  filename: (req, file, cb) => {
-    const unique = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname); // .jpg, .png ฯลฯ
-    cb(null, unique + ext);
+// storage
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "bingo_images",
+    allowed_formats: ["jpg", "png", "jpeg"],
+    transformation: [{ width: 800, crop: "limit" }],
   },
 });
 
