@@ -1,8 +1,8 @@
 import express from "express";
-import { exportLeaderboardExcel } from "../controllers/export.controller.js";
+import { exportLeaderboard } from "../controllers/export.controller.js";
 
 const router = express.Router();
 
-router.get("/leaderboard/excel", exportLeaderboardExcel);
+router.get("/leaderboard/excel", exportLeaderboard);
 
 export default router;
