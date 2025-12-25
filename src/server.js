@@ -46,7 +46,7 @@ app.use("/uploads", (req, res, next) => {
 });
 app.use("/api/auth", authRoutes);
 app.use("/api/bingo", bingoRoutes);
-app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "./uploads")));
 app.use("/api/export", exportRoutes);
 
 const PORT = process.env.PORT || 8080;

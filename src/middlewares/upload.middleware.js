@@ -3,7 +3,7 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 
-const uploadDir = path.join(process.cwd(), "uploads");
+const uploadDir = path.join(process.cwd(), "../uploads");
 
 // ถ้าโฟลเดอร์ยังไม่มี ให้สร้าง
 if (!fs.existsSync(uploadDir)) {
