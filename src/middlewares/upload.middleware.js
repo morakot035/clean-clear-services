@@ -2,8 +2,12 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import { fileURLToPath } from "url";
 
-const uploadDir = path.join(process.cwd(), "../uploads");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const uploadDir = path.join(__dirname, "../uploads");
 
 // ถ้าโฟลเดอร์ยังไม่มี ให้สร้าง
 if (!fs.existsSync(uploadDir)) {
